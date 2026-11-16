@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+export default `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -156,4 +156,4 @@ requestAnimationFrame(loop);
 
 </script>
 </body>
-</html>
+</html>`
