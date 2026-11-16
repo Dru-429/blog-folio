@@ -8,7 +8,9 @@ import skyMask from "@/public/assets/fall/mask.png";
 import { clampTime } from "@/lib/temple-time";
 import { BOT, SUNC, TH_BG, TH_FG, TH_INK, TICK, TOP, lerp, pal, sm } from "@/lib/fall-palette";
 
-const frames = Object.values(import.meta.glob("@/public/assets/fall/fig-*.webp", { eager: true, import: "default" })) as string[];
+const FIG_COUNT = 48;
+/** Served from `public/assets/fall/` — root-relative paths, zero-padded for frame order. */
+const frames = Array.from({ length: FIG_COUNT }, (_, i) => `/assets/fall/fig-${String(i).padStart(2, "0")}.webp`);
 const D = { W: 960, H: 448, bw: 100, bh: 150 };
 const track = `linear-gradient(to right, ${TICK.map(([p, c]) => `${c} ${p * 100}%`).join(",")})`;
 type Star = { l: number; t: number; z: number; d: number; o: number };
@@ -42,9 +44,9 @@ export function FallScene() {
     const onWheel = (e: WheelEvent) => { e.preventDefault(); setTime((c) => clampTime(c + (e.deltaY + e.deltaX) * 0.08)); };
     el?.addEventListener("wheel", onWheel, { passive: false });
 
-    const imgs = frames.map((s) => {
+    const imgs = frames.map((src) => {
       const i = new Image();
-      i.src = typeof s === "string" ? s : s.src;
+      i.src = src;
       return i;
     });
     const canvas = fig.current!, ctx = canvas.getContext("2d")!;
