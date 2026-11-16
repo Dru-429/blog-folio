@@ -3,14 +3,15 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import plate from "@/assets/fall/plate.jpg";
-import skyMask from "@/assets/fall/mask.png";
+import plate from "@/public/assets/fall/plate.jpg";
+import skyMask from "@/public/assets/fall/mask.png";
 import { clampTime } from "@/lib/temple-time";
 import { BOT, SUNC, TH_BG, TH_FG, TH_INK, TICK, TOP, lerp, pal, sm } from "@/lib/fall-palette";
 
-const frames = Object.values(import.meta.glob("@/assets/fall/fig-*.webp", { eager: true, import: "default" })) as string[];
+const frames = Object.values(import.meta.glob("@/public/assets/fall/fig-*.webp", { eager: true, import: "default" })) as string[];
 const D = { W: 960, H: 448, bw: 100, bh: 150 };
 const track = `linear-gradient(to right, ${TICK.map(([p, c]) => `${c} ${p * 100}%`).join(",")})`;
+type Star = { l: number; t: number; z: number; d: number; o: number };
 
 /** Dithered falling Spider-Man scene; the slider drives the sky and the whole page theme. */
 export function FallScene() {
@@ -20,13 +21,12 @@ export function FallScene() {
   const scene = useRef<HTMLDivElement>(null);
   const fig = useRef<HTMLCanvasElement>(null);
   const [edge, setEdge] = useState<string>();
-  const stars = useRef(Array.from({ length: 90 }, () => ({ l: Math.random() * 100, t: Math.random() * 80, z: Math.random() * 1.8 + 0.8, d: Math.random() * 3, o: 0.5 + Math.random() * 0.5 })));
-  const [mounted, setMounted] = useState(false);
+  const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => { target.current = time; }, [time]);
 
   useEffect(() => {
-    setMounted(true);
+    setStars(Array.from({ length: 90 }, () => ({ l: Math.random() * 100, t: Math.random() * 80, z: Math.random() * 1.8 + 0.8, d: Math.random() * 3, o: 0.5 + Math.random() * 0.5 })));
     // feathered, dithered edge mask
     const w = 320, h = Math.round((w * D.H) / D.W), cv = document.createElement("canvas");
     cv.width = w; cv.height = h;
@@ -91,11 +91,11 @@ export function FallScene() {
         <span className="tape absolute -bottom-2 -left-4 z-10 h-6 w-16 rotate-[35deg]" />
         <span className="tape absolute -bottom-2 -right-4 z-10 h-6 w-16 -rotate-[35deg]" />
         <div ref={scene} className="fall-scene" style={edge ? ({ "--edge": `url("${edge}")` } as CSSProperties) : undefined} role="img" aria-label="Dithered pixel Spider-Man falling past an upside-down city, from day into night">
-          <img className="fall-plate" src={plate} alt="" />
-          <div className="fall-sky" style={{ "--sky": `url("${skyMask}")` } as CSSProperties}>
+          <img className="fall-plate" src={plate.src} alt="" />
+          <div className="fall-sky" style={{ "--sky": `url("${skyMask.src}")` } as CSSProperties}>
             <div className="fall-grad" />
             <div className="fall-stars">
-              {mounted && stars.current.map((s, i) => <i key={i} style={{ left: `${s.l}%`, top: `${s.t}%`, width: s.z, height: s.z, animationDelay: `${s.d}s`, opacity: s.o }} />)}
+              {stars.map((s, i) => <i key={i} style={{ left: `${s.l}%`, top: `${s.t}%`, width: s.z, height: s.z, animationDelay: `${s.d}s`, opacity: s.o }} />)}
             </div>
             <div className="fall-orb fall-sun" />
             <div className="fall-orb fall-moon" />

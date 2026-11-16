@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import standSrc from "@/assets/spidey-stand.png";
-import shootSrc from "@/assets/spidey-shoot.png";
-import airSrc from "@/assets/spidey-air.png";
+import standSrc from "@/public/assets/spidey-stand.png";
+import shootSrc from "@/public/assets/spidey-shoot.png";
+import airSrc from "@/public/assets/spidey-air.png";
 
 type Pt = { x: number; y: number };
 type Web = { x: number; y: number; t: number; r: number; R: number; n: number; g: number; lw: number; life: number; s: number[] };
@@ -24,7 +24,7 @@ export function SpiderCursor() {
     if (!cv || !c) return;
     const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const im: Record<Key, HTMLImageElement> = { stand: new Image(), shoot: new Image(), air: new Image() };
-    im.stand.src = standSrc; im.shoot.src = shootSrc; im.air.src = airSrc;
+    im.stand.src = standSrc.src; im.shoot.src = shootSrc.src; im.air.src = airSrc.src;
 
     let W = 0, H = 0, st: "stand" | "shoot" | "swing" | "land" = "stand";
     let pos: Pt = { x: 0, y: 0 }, from: Pt = pos, to: Pt = pos, dist = 0, t0 = 0, flip = 1, rot = 0;
@@ -109,8 +109,10 @@ export function SpiderCursor() {
 
     const a0 = Math.atan2(S.shoot.hy, S.shoot.hx);
     const put = (k: Key, x: number, y: number, sx: number, sy: number, r = 0) => {
-      const s = S[k]; if (!im[k].complete) return;
-      c.save(); c.translate(x, y); c.scale(sx * K, sy * K); c.rotate(r); c.drawImage(im[k], -s.w / 2, -s.h / 2); c.restore();
+      const img = im[k];
+      const s = S[k];
+      if (!img.complete || img.naturalWidth === 0) return;
+      c.save(); c.translate(x, y); c.scale(sx * K, sy * K); c.rotate(r); c.drawImage(img, -s.w / 2, -s.h / 2); c.restore();
     };
     const web = (a: Pt, b: Pt) => {
       c.save(); c.lineCap = "round"; c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y);
