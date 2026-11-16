@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useRef, useState, type ReactNode } from "react";
 import { Star } from "lucide-react";
@@ -7,13 +8,8 @@ import { FallScene } from "@/components/fall-scene";
 import { GithubActivity } from "@/components/github-activity";
 import { SpiderCursor } from "./spider-coursor";
 import { SpiderSense } from "./spider-sense";
-
-const projects: { name: string; desc: string; githubUrl?: string; stars?: number }[] = [
-  { name: "Github Wrapped", desc: "generates spotify style code wrapped show." },
-  { name: "Readme", desc: "generates read me." },
-  { name: "Pixel Journal", desc: "a tiny diary that draws your mood." },
-  { name: "Math Playground", desc: "interactive visual proofs on the web." },
-];
+import { MoreFromMe } from "./more-from-me";
+import { projects } from "@/data/Project";
 
 function Tapes() {
   return (
@@ -26,11 +22,17 @@ function Tapes() {
   );
 }
 
-function PicBox({ h, label = "Pic" }: { h: string; label?: string }) {
+function PicBox({ h, src, label = "Pic" }: { h: string; src?: string; label?: string }) {
   return (
-    <div className={`picture-box relative flex items-center justify-center rounded-lg border-2 border-dashed border-ink-dark/60 bg-paper ${h}`}>
+    <div className={`picture-box relative overflow-hidden rounded-lg border-2 border-dashed border-ink-dark/60 bg-paper ${h}`}>
       <Tapes />
-      <span className="picture-label text-ink-dark/70">{label}</span>
+      {src ? (
+        <img className="absolute inset-0 h-full w-full object-cover" src={src} alt="" />
+      ) : (
+        <div className="flex h-full items-center justify-center">
+          <span className="picture-label text-ink-dark/70">{label}</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -91,14 +93,22 @@ export function Portfolio() {
           <h2 className="relative mt-[var(--line)] font-bold text-ink-dark"><span className="absolute -left-10">➜</span><span className="underline underline-offset-4">Projects</span></h2>
 
           <div className="mt-[var(--line)] grid gap-x-10 gap-y-[var(--line)] sm:grid-cols-2">
-            {projects.map((p) => (
+            {projects.slice(0, 4).map((p) => (
               <div key={p.name}>
-                <div className="project-note text-right text-sm text-ink">• live ↗</div>
-                <PicBox h="h-[calc(var(--line)*3)]" />
+                <div className="project-note text-right text-sm text-ink">
+                  {p.link ? (
+                    <a className="underline decoration-dotted underline-offset-2" href={p.link} target="_blank" rel="noreferrer">
+                      • live ↗
+                    </a>
+                  ) : (
+                    "• draft"
+                  )}
+                </div>
+                <PicBox h="h-[calc(var(--line)*3)]" src={p.banner} />
                 <div className="project-note flex items-center justify-between gap-3 font-bold text-ink-dark">
                   <span>{p.name}</span>
-                  {p.githubUrl ? (
-                    <a className="project-stars inline-flex shrink-0 items-center gap-1" href={p.githubUrl} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub, ${p.stars ?? "unknown"} stars`}>
+                  {p.github ? (
+                    <a className="project-stars inline-flex shrink-0 items-center gap-1" href={p.github} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub, ${p.stars ?? "unknown"} stars`}>
                       <Star className="sketch-star h-5 w-5" aria-hidden="true" /><span>{p.stars ?? "—"}</span>
                     </a>
                   ) : (
@@ -121,6 +131,7 @@ export function Portfolio() {
           <div className="mt-[var(--line)]">
             <GithubActivity />
           </div>
+          <MoreFromMe />
           <div className="mt-[var(--line)] relative -left-30 min-w-3xl h-auto">
              <SpiderSense mono={mono} trackRef={area} />
           </div>
