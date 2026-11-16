@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Star } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { FallScene } from "@/components/fall-scene";
@@ -53,9 +53,10 @@ function SheetChrome({ header }: { header?: ReactNode }) {
 
 export function Portfolio() {
   const [mono, setMono] = useState(false);
+  const area = useRef<HTMLDivElement>(null)
 
   return (
-    <main className={`portfolio flex min-h-screen flex-col gap-10 bg-desk px-3 pb-10 pt-12 sm:pb-16 ${mono ? "is-mono font-mono-ui" : "font-hand text-[1.25rem]"}`}>
+    <main ref={area} className={`portfolio flex min-h-screen flex-col gap-10 bg-desk px-3 pb-10 pt-12 sm:pb-16 ${mono ? "is-mono font-mono-ui" : "font-hand text-[1.25rem]"}`}>
       <article className="sheet relative mx-auto w-full max-w-3xl leading-line text-ink">
         <SheetChrome
           header={
@@ -113,15 +114,15 @@ export function Portfolio() {
         </div>
       </article>
 
-      <article className="sheet relative mx-auto w-full max-w-3xl leading-line text-ink">
+      <article className="sheet relative mx-auto w-full max-w-3xl leading-line text-ink overflow-x-hidden">
         <SheetChrome />
         <div className="notebook-content pb-[var(--line)] pr-6 sm:pr-8">
           <h2 className="relative font-bold text-ink-dark"><span className="absolute -left-10">➜</span><span className="underline underline-offset-4">GitHub Activity</span></h2>
           <div className="mt-[var(--line)]">
             <GithubActivity />
           </div>
-          <div className="mt-[var(--line)]">
-            <SpiderSense mono={mono} />
+          <div className="mt-[var(--line)] relative -left-30 min-w-3xl h-auto">
+             <SpiderSense mono={mono} trackRef={area} />
           </div>
         </div>
       </article>
