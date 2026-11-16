@@ -1,9 +1,16 @@
-import { useEffect, useRef } from "react";
+"use client";
+
+import { useEffect, useMemo, useRef } from "react";
 // import scene from "@/lib/spider-sense.html?raw";
-import scene from "@/lib/spider-sense-html"
+import scene from "@/lib/spider-sense-html";
+
 /** Keep the supplied illustration's animation isolated from the page cursor. */
 export function SpiderSense({ mono }: { mono: boolean }) {
   const frame = useRef<HTMLIFrameElement>(null);
+  const srcDoc = useMemo(
+    () => scene.replace("<head>", `<head><base href="${typeof location !== "undefined" ? location.origin : ""}/">`),
+    [],
+  );
 
   useEffect(() => {
     const sync = () => {
@@ -42,7 +49,7 @@ export function SpiderSense({ mono }: { mono: boolean }) {
         ref={frame}
         className="spider-sense-frame"
         title="Spider-Sense — interactive Spider-Man illustration"
-        srcDoc={scene}
+        srcDoc={srcDoc}
         sandbox="allow-scripts"
       />
     </section>

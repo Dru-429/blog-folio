@@ -42,7 +42,11 @@ export function FallScene() {
     const onWheel = (e: WheelEvent) => { e.preventDefault(); setTime((c) => clampTime(c + (e.deltaY + e.deltaX) * 0.08)); };
     el?.addEventListener("wheel", onWheel, { passive: false });
 
-    const imgs = frames.map((s) => { const i = new Image(); i.src = s; return i; });
+    const imgs = frames.map((s) => {
+      const i = new Image();
+      i.src = typeof s === "string" ? s : s.src;
+      return i;
+    });
     const canvas = fig.current!, ctx = canvas.getContext("2d")!;
     canvas.width = D.W; canvas.height = D.H;
     const N = imgs.length, R = document.documentElement.style, root = scene.current!;
