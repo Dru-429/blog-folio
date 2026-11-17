@@ -95,8 +95,8 @@ export function Portfolio() {
             <FallScene />
           </div>
 
-          <section className="notebook-section" aria-labelledby="projects-heading">
-            <h2 id="projects-heading" className="type-h2 relative text-ink-dark">
+          <section className="mt-15" aria-labelledby="projects-heading">
+            <h2 id="projects-heading" className="type-h2 relative -top-10 text-ink-dark">
               <span className="absolute -left-10" aria-hidden>➜</span>
               <span className="underline underline-offset-2">Projects</span>
             </h2>

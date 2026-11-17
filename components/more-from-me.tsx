@@ -42,21 +42,18 @@ function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
   );
 
   return (
-    <div className="more-from-me-row flex gap-4">
-      <div className="more-from-me-logo-wrap shrink-0">
-        <img className="more-from-me-logo" src={p.logo} alt="" width={52} height={52} loading="lazy" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          {title}
-          {p.github ? (
-            <a className="type-body-inline notebook-link text-ink opacity-70 hover:opacity-100" href={p.github} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-          ) : null}
+    <div>
+      <div className="more-from-me-row flex gap-4">
+        <div className="more-from-me-logo-wrap relative top-1.5">
+          <img className="more-from-me-logo" src={p.logo} alt="" width={52} height={52} loading="lazy" />
         </div>
-        <p className="more-from-me-desc type-body-inline mt-0 text-ink/65">{p.desc}</p>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline ">
+            {title}
+          </div>
+        </div>
       </div>
+      <p className=" type-body-inline mt-0 text-ink/90">{p.desc}</p>
     </div>
   );
 }
