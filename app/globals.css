@@ -431,7 +431,7 @@
   --temple-track: linear-gradient(to right, var(--temple-day-bottom), var(--temple-sun), var(--temple-sunset-bottom), var(--temple-sunset-top), var(--temple-night-bottom));
 }
 .temple-figure { position: relative; z-index: 1; }
-.temple-frame { border: 2px dashed var(--ink-dark); border-radius: 8px; padding: 4px; background: var(--paper); }
+.temple-frame { border: 2px dashed var(--ink-dark); border-radius: 8px; padding: 10px; background: var(--paper); }
 .temple-scene { position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 8 / 5; border-radius: 5px; }
 .temple-sky { position: absolute; inset: 0; }
 .temple-sky-day { background: linear-gradient(var(--temple-day-top), var(--temple-day-bottom)); }
@@ -453,7 +453,7 @@
 .temple-stars i, .temple-fireflies i { position: absolute; width: 2px; height: 2px; background: var(--temple-moon); }
 .temple-fireflies i { background: var(--temple-firefly); box-shadow: 0 0 5px var(--temple-firefly); animation: temple-twinkle 3s ease-in-out infinite alternate; }
 .temple-controls { display: flex; align-items: center; gap: 12px; min-height: var(--line); margin-top: 12px; color: var(--ink-dark); }
-.temple-endpoint { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.temple-endpoint { display: flex; align-items: top; gap: 5px; white-space: nowrap; }
 .temple-slider { min-height: 36px; cursor: ew-resize; }
 .temple-slider [data-slot], .temple-slider span { transition: none; }
 .temple-slider > span:first-child { height: 16px; border-radius: 0; background: repeating-linear-gradient(to right, transparent 0 3px, var(--paper) 3px 6px), var(--temple-track); }
@@ -478,7 +478,7 @@
 
 .spider-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; image-rendering: pixelated; }
 
-.fall-scene { position: relative; aspect-ratio: 960 / 448; overflow: hidden; background: #000; border-radius: 4px; -webkit-mask-image: var(--edge); mask-image: var(--edge); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+.fall-scene { position: relative; aspect-ratio: 960 / 448; overflow: hidden; background: #000; border-radius: 4px;  }
 .fall-scene > * { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .fall-plate { object-fit: cover; filter: var(--plate-filter); }
 .fall-sky { -webkit-mask-image: var(--sky); mask-image: var(--sky); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; overflow: hidden; }

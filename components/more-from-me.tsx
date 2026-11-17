@@ -53,7 +53,7 @@ function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
           </div>
         </div>
       </div>
-      <p className=" type-body-inline mt-0 text-ink/90">{p.desc}</p>
+      <p className=" type-body-inline mt-0 tracking-tighter text-ink/97 w-full">{p.desc}</p>
     </div>
   );
 }
