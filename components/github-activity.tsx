@@ -3,9 +3,11 @@
 
 import { useEffect, useState } from "react";
 
-
-const CELL = 12, GAP = 3, LEFT = 0, TOP = 18;
-const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const CELL = 12,
+  GAP = 3,
+  LEFT = 0,
+  TOP = 18;
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 type Contribution = { date: string; count: number; level: number };
 type Activity = { total: number; contributions: Contribution[] };
@@ -30,9 +32,9 @@ export function GithubActivity() {
     return () => controller.abort();
   }, []);
 
-  if (loading) return <p className="project-note text-ink">loading activity…</p>;
+  if (loading) return <p className="type-body-inline text-ink">loading activity…</p>;
   if (!data || !data.contributions.length)
-    return <p className="project-note text-ink">activity could not load right now.</p>;
+    return <p className="type-body-inline text-ink">activity could not load right now.</p>;
 
   return <ActivityGraph total={data.total} contributions={data.contributions} />;
 }
@@ -57,7 +59,8 @@ function ActivityGraph({ total, contributions }: Activity) {
       months.push({ col: c.col, label: MONTHS[d.getUTCMonth()] ?? "" });
   });
 
-  const w = LEFT + cols * (CELL + GAP), h = TOP + 7 * (CELL + GAP);
+  const w = LEFT + cols * (CELL + GAP),
+    h = TOP + 7 * (CELL + GAP);
 
   return (
     <figure className="gh-activity">
@@ -73,7 +76,9 @@ function ActivityGraph({ total, contributions }: Activity) {
             </filter>
           </defs>
           {months.map((m) => (
-            <text key={m.col + m.label} x={LEFT + m.col * (CELL + GAP)} y={11} className="gh-month">{m.label}</text>
+            <text key={m.col + m.label} x={LEFT + m.col * (CELL + GAP)} y={11} className="gh-month">
+              {m.label}
+            </text>
           ))}
           <g filter="url(#crayon)">
             {cells.map((c) => (
@@ -84,10 +89,10 @@ function ActivityGraph({ total, contributions }: Activity) {
           </g>
         </svg>
       </div>
-      <figcaption className="project-note flex items-center justify-between text-sm text-ink-dark">
+      <figcaption className="project-note flex items-center justify-between type-caption text-ink-dark">
         <span>{total} contributions in the last year</span>
         <span className="flex items-center gap-1">
-          Less
+          <span className="gh-legend-less">Less</span>
           <svg width="80" height="12" aria-hidden="true">
             <g filter="url(#crayon)">
               {[0, 1, 2, 3, 4].map((l) => (
@@ -95,7 +100,7 @@ function ActivityGraph({ total, contributions }: Activity) {
               ))}
             </g>
           </svg>
-          More
+          <span className="gh-legend-more">More</span>
         </span>
       </figcaption>
     </figure>

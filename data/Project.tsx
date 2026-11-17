@@ -14,7 +14,7 @@ const bannerPlaceholder = "/assets/projects/placeholder-banner.svg";
 /** Portfolio and “More from me” listings share this array. */
 export const projects: Project[] = [
   {
-    name: "Github Wrapped",
+    name: "GitHub Wrapped",
     desc: "Generates a Spotify-style year-in-code show from your GitHub activity.",
     logo: logoPlaceholder,
     banner: bannerPlaceholder,
@@ -23,7 +23,7 @@ export const projects: Project[] = [
     stars: 128,
   },
   {
-    name: "Readme",
+    name: "README",
     desc: "Generates polished README files for your repositories.",
     logo: logoPlaceholder,
     banner: bannerPlaceholder,

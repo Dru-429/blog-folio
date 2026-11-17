@@ -112,9 +112,9 @@ export function FallScene() {
         </div>
       </div>
       <div className="temple-controls" ref={controls}>
-        <span className="temple-endpoint"><Sun size={16} aria-hidden="true" /><span>Day</span></span>
+        <span className="temple-endpoint type-micro"><Sun size={16} aria-hidden="true" /><span>Day</span></span>
         <Slider className="temple-slider" min={0} max={100} step={1} value={[time]} onValueChange={([v]) => setTime(v ?? 0)} aria-label="Time of day" aria-valuetext={time < 25 ? "Day" : time < 55 ? "Sunset" : "Night"} />
-        <span className="temple-endpoint"><Moon size={16} aria-hidden="true" /><span>Night</span></span>
+        <span className="temple-endpoint type-micro"><Moon size={16} aria-hidden="true" /><span>Night</span></span>
       </div>
     </figure>
   );
