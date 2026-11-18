@@ -464,17 +464,32 @@
 @media (prefers-reduced-motion: reduce) { .temple-fireflies i { animation: none; } }
 @media (max-width: 640px) { .temple-controls { gap: 8px; } .temple-endpoint { gap: 3px; } }
 :root {
-  --gh-0: oklch(0.9 0.01 85);
-  --gh-1: oklch(0.86 0.13 145);
-  --gh-2: oklch(0.72 0.17 145);
-  --gh-3: oklch(0.58 0.15 147);
-  --gh-4: oklch(0.42 0.11 150);
+  --gh-0: var(--paper);
+  --gh-1: color-mix(in oklch, var(--ink) 24%, var(--paper));
+  --gh-2: color-mix(in oklch, var(--ink) 42%, var(--paper));
+  --gh-3: color-mix(in oklch, var(--ink) 64%, var(--paper));
+  --gh-4: color-mix(in oklch, var(--ink) 88%, var(--paper));
+  --gh-cell: 16px;
+  --gh-gap: 4px;
 }
 .gh-activity { position: relative; z-index: 1; }
 .gh-month { font-size: var(--type-micro-size); line-height: var(--type-micro-leading); font-weight: var(--type-micro-weight); letter-spacing: var(--type-micro-tracking); fill: var(--ink-dark); font-family: inherit; }
 .gh-legend-less,
 .gh-legend-more { font-size: var(--type-micro-size); font-weight: var(--type-micro-weight); letter-spacing: var(--type-micro-tracking); }
-.gh-l0 { fill: var(--gh-0); } .gh-l1 { fill: var(--gh-1); } .gh-l2 { fill: var(--gh-2); } .gh-l3 { fill: var(--gh-3); } .gh-l4 { fill: var(--gh-4); }
+.gh-l0 { fill: var(--gh-0); stroke: color-mix(in oklch, var(--ink) 22%, transparent); }
+.gh-l1 { fill: var(--gh-1); }
+.gh-l2 { fill: var(--gh-2); }
+.gh-l3 { fill: var(--gh-3); }
+.gh-l4 { fill: var(--gh-4); }
+.gh-l0,
+.gh-l1,
+.gh-l2,
+.gh-l3,
+.gh-l4 { stroke-width: 1px; }
+.gh-l1,
+.gh-l2,
+.gh-l3,
+.gh-l4 { stroke: color-mix(in oklch, var(--ink-dark) 35%, transparent); }
 
 .spider-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; image-rendering: pixelated; }
 

@@ -117,7 +117,7 @@ export function Portfolio() {
               <span className="absolute -left-10" aria-hidden>➜</span>
               <span className="underline underline-offset-2">GitHub Activity</span>
             </h2>
-            <div className="heading-gap">
+            <div className="heading-gap ">
               <GithubActivity />
             </div>
           </section>
