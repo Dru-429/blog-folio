@@ -4,12 +4,11 @@ import { projects } from "@/data/Project";
 
 export function MoreFromMe() {
   return (
-    <section className="more-from-me notebook-section" aria-labelledby="more-from-me-heading">
+    <section className="more-from-me mt-16" aria-labelledby="more-from-me-heading">
       <h2 id="more-from-me-heading" className="type-h2 relative flex items-center gap-2 text-ink-dark">
         <span className="absolute -left-10" aria-hidden>
           ➜
         </span>
-        <span className="more-stamp" aria-hidden />
         <span className="underline underline-offset-2 decoration-dotted">More from me</span>
       </h2>
 
