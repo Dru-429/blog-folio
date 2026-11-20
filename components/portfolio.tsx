@@ -10,6 +10,7 @@ import { SpiderCursor } from "./spider-coursor";
 import { SpiderSense } from "./spider-sense";
 import { MoreFromMe } from "./more-from-me";
 import { projects } from "@/data/Project";
+import { Footer } from "./footer";
 
 function Tapes() {
   return (
@@ -124,6 +125,9 @@ export function Portfolio() {
           <MoreFromMe />
           <div className="notebook-section relative -left-30 min-w-3xl h-auto">
             <SpiderSense mono={mono} trackRef={area} />
+          </div>
+          <div>
+            <Footer />
           </div>
         </div>
       </article>
