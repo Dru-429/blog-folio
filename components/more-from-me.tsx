@@ -9,7 +9,7 @@ export function MoreFromMe() {
         <span className="absolute -left-10" aria-hidden>
           ➜
         </span>
-        <span className="underline underline-offset-2 decoration-dotted">More from me</span>
+        <span className="underline underline-offset-2">More from me</span>
       </h2>
 
       <ul className="more-from-me-list heading-gap list-none p-0">
@@ -26,7 +26,7 @@ export function MoreFromMe() {
 function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
   const title = p.link ? (
     <a
-      className="type-h3 group inline-flex items-center gap-1 text-ink-dark notebook-link decoration-dotted"
+      className="type-h3 group inline-flex items-center gap-1 text-ink-dark underline underline-offset-4 decoration-dotted"
       href={p.link}
       target="_blank"
       rel="noreferrer"
