@@ -1,19 +1,60 @@
 "use client"
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Moon, Sun } from "lucide-react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
-import plate from "@/public/assets/city-bld.png";
-import skyMask from "@/public/assets/city-win.png";
 import { clampTime } from "@/lib/temple-time";
-import { BOT, SUNC, TH_BG, TH_FG, TH_INK, TICK, TOP, lerp, pal, sm } from "@/lib/fall-palette";
+import { TH_BG, TH_FG, TH_INK, TICK, lerp, pal, sm } from "@/lib/fall-palette";
 
-const FIG_COUNT = 48;
-/** Served from `public/assets/fall/` — root-relative paths, zero-padded for frame order. */
-const frames = Array.from({ length: FIG_COUNT }, (_, i) => `/assets/fall/fig-${String(i).padStart(2, "0")}.webp`);
-const D = { W: 960, H: 448, bw: 100, bh: 150 };
+const D = { W: 960, H: 448 };
 const track = `linear-gradient(to right, ${TICK.map(([p, c]) => `${c} ${p * 100}%`).join(",")})`;
 type Star = { l: number; t: number; z: number; d: number; o: number };
+type Stops = [number, string][];
+
+/* ── the cardboard board: every colour is interpolated from the one slider value ── */
+const SKT: Stops = [[0, "#7aa0f2"], [0.3, "#7f86d6"], [0.5, "#5b4f9c"], [0.72, "#1c3558"], [1, "#0c2038"]]; // sky, top
+const SKB: Stops = [[0, "#a6c3fb"], [0.3, "#ffc79a"], [0.5, "#ff8f78"], [0.72, "#3a6089"], [1, "#1b4468"]]; // sky, horizon
+const C1: Stops = [[0, "#ffffff"], [0.3, "#ffe6d4"], [0.5, "#ffc2b0"], [0.72, "#8fb2cc"], [1, "#86b0ca"]]; // cloud, outer paper
+const C2: Stops = [[0, "#e2ecff"], [0.3, "#f9c9b4"], [0.5, "#e993a0"], [0.72, "#5c8fb0"], [1, "#4f86a8"]]; // cloud, middle
+const C3: Stops = [[0, "#c8d9fb"], [0.3, "#ecaa9c"], [0.5, "#b7708f"], [0.72, "#3f6c92"], [1, "#33668a"]]; // cloud, inner
+const CF: Stops = [[0, "#8aa4da"], [0.3, "#a98fb4"], [0.5, "#8a5a86"], [0.72, "#27456a"], [1, "#1a3556"]]; // far skyline
+const CM: Stops = [[0, "#566fa8"], [0.3, "#7a5f92"], [0.5, "#5a3a72"], [0.72, "#16294a"], [1, "#0e1c38"]]; // mid skyline
+const CN: Stops = [[0, "#303f78"], [0.3, "#4a3a68"], [0.5, "#33224f"], [0.72, "#0c1730"], [1, "#060d1f"]]; // near skyline
+const CW: Stops = [[0, "#aebfe9"], [0.35, "#ffd9a0"], [0.55, "#ffd27a"], [1, "#ffe08a"]]; // windows
+const SUNC: Stops = [[0, "#ffd84a"], [0.35, "#ffb23c"], [0.55, "#ff7a38"], [1, "#ff7a38"]]; // sun disc
+
+/* ── clouds: scalloped, three stacked paper tones (deterministic, so SSR and client agree) ── */
+type Cloud = { cx: number; base: number; w: number; h: number; xs: number[]; rs: number[] };
+function cloudShapes(specs: [number, number, number, number][], seed: number): Cloud[] {
+  let s = seed;
+  const rn = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  return specs.map(([cx, base, w, h]) => {
+    const n = 5, xs: number[] = [], rs: number[] = [];
+    for (let i = 0; i < n; i++) {
+      xs.push(cx - w / 2 + ((i + 0.5) * w) / n);
+      rs.push(h * (0.42 + 0.38 * Math.sin((Math.PI * (i + 0.5)) / n)) * (0.85 + rn() * 0.3));
+    }
+    return { cx, base, w, h, xs, rs };
+  });
+}
+const FAR_CLOUDS = cloudShapes([[120, 170, 260, 90], [430, 120, 220, 70], [760, 190, 300, 100], [1060, 135, 240, 80]], 11);
+const NEAR_CLOUDS = cloudShapes([[260, 255, 360, 120], [900, 232, 400, 130]], 29);
+/** [class, scale, drop] — outer tone, then two smaller tones nudged downwards */
+const TONES: [string, number, number][] = [["fall-c1", 1, 0], ["fall-c2", 0.8, 0.16], ["fall-c3", 0.56, 0.34]];
+function Clouds({ shapes }: { shapes: Cloud[] }) {
+  return (
+    <svg viewBox="0 0 1200 448" preserveAspectRatio="none" aria-hidden="true">
+      {shapes.map((c, k) =>
+        TONES.map(([cls, s, dy]) => (
+          <g key={`${k}-${cls}`} className={cls}>
+            {c.xs.map((x, i) => <circle key={i} cx={x} cy={c.base - c.rs[i] * 0.65 + c.rs[i] * dy} r={c.rs[i] * s} />)}
+            <ellipse cx={c.cx} cy={c.base - c.h * 0.1 + c.h * dy * 0.4} rx={c.w * 0.5 * (s < 1 ? s + 0.1 : 1)} ry={c.h * 0.22 * s + 4} />
+          </g>
+        )),
+      )}
+    </svg>
+  );
+}
 
 type Pt = [number, number];
 /** Swinging Spider-Man: a jointed cut-out posed from the swing sheet, drawn on the 960×448 canvas. */
@@ -66,9 +107,10 @@ function rHand(c: CanvasRenderingContext2D, p: Pt, r: number, fill: string) {
   c.beginPath(); c.arc(p[0], p[1], r, 0, Math.PI * 2);
   c.fillStyle = fill; c.fill(); c.strokeStyle = RC.line; c.lineWidth = 1; c.stroke();
 }
-function makeRig() {
+/** Q = backing-store scale (1–2), so the vector figure stays sharp on retina screens. */
+function makeRig(Q: number) {
   const oc = document.createElement("canvas");
-  oc.width = D.W; oc.height = D.H;
+  oc.width = D.W * Q; oc.height = D.H * Q;
   const c = oc.getContext("2d")!;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1;
   const spiderP = new Path2D("M0 -2.6C2 -2.6 2.6 .8 0 3.4C-2.6 .8 -2 -2.6 0 -2.6Z");
@@ -102,6 +144,7 @@ function makeRig() {
     ctx.restore();
 
     // the figure, drawn on its own layer so the shadow is cast once
+    c.setTransform(Q, 0, 0, Q, 0, 0);
     c.clearRect(0, 0, D.W, D.H);
     c.save();
     c.translate(gx, gy); c.rotate(-a); c.scale(Math.max(Math.abs(fs), 0.03) * (fs < 0 ? -1 : 1) * 1.12, 1.12);
@@ -141,24 +184,26 @@ function makeRig() {
     rBone(c, S, rMix(S, En, 0.3), 5.2, 5, RC.red, 0);
     c.restore();
 
-    // composite with the cardboard rim light + drop shadow
+    // composite with the cardboard rim light + drop shadow (shadow offsets/blur are in device px, hence × Q)
     ctx.save();
-    ctx.shadowColor = "rgba(255,255,255,.3)"; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = -1; ctx.shadowBlur = 0; ctx.drawImage(oc, 0, 0);
-    ctx.shadowColor = "rgba(0,0,0,.4)"; ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 7; ctx.shadowBlur = 5; ctx.drawImage(oc, 0, 0);
+    ctx.shadowColor = "rgba(255,255,255,.3)"; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = -Q; ctx.shadowBlur = 0; ctx.drawImage(oc, 0, 0, D.W, D.H);
+    ctx.shadowColor = "rgba(0,0,0,.4)"; ctx.shadowOffsetX = 3 * Q; ctx.shadowOffsetY = 7 * Q; ctx.shadowBlur = 5 * Q; ctx.drawImage(oc, 0, 0, D.W, D.H);
     ctx.restore();
   };
 }
 
-/** Dithered falling Spider-Man scene; the slider drives the sky and the whole page theme. */
+/** Cardboard storytelling board: layered paper cut-outs. The slider drives the sky, sun and moon, clouds,
+ *  skyline layers, the swinging figure and the whole page theme. */
 export function FallScene() {
   const [time, setTime] = useState(0);
   const target = useRef(0);
   const controls = useRef<HTMLDivElement>(null);
   const scene = useRef<HTMLDivElement>(null);
   const fig = useRef<HTMLCanvasElement>(null);
-  const [edge, setEdge] = useState<string>();
   const [stars, setStars] = useState<Star[]>([]);
   const timeLabel = (t: number) => (t < 25 ? "Day" : t < 55 ? "Sunset" : "Night");
+  const farClouds = useMemo(() => <Clouds shapes={FAR_CLOUDS} />, []);
+  const nearClouds = useMemo(() => <Clouds shapes={NEAR_CLOUDS} />, []);
   const SPIDER_PATH =
   "M78 56L67 65L64 72L63 79L68 89L44 104L43 144L44 152L83 175L87 175L127 151L127 103L103 89L107 79L107 72L104 65L93 56Z " +
   "M131 17L122 24L122 52L111 59L111 88L140 105L141 162L150 169L150 99L121 82L121 64L132 58Z " +
@@ -169,37 +214,24 @@ export function FallScene() {
   useEffect(() => { target.current = time; }, [time]);
 
   useEffect(() => {
-    setStars(Array.from({ length: 90 }, () => ({ l: Math.random() * 100, t: Math.random() * 80, z: Math.random() * 1.8 + 0.8, d: Math.random() * 3, o: 0.5 + Math.random() * 0.5 })));
-    // feathered, dithered edge mask
-    const w = 320, h = Math.round((w * D.H) / D.W), cv = document.createElement("canvas");
-    cv.width = w; cv.height = h;
-    const x = cv.getContext("2d")!, d = x.createImageData(w, h);
-    for (let y = 0; y < h; y++) for (let X = 0; X < w; X++) {
-      const nx = (X / w - 0.5) * 2, ny = (y / h - 0.5) * 2, e = Math.abs(nx) ** 3 + Math.abs(ny) ** 3;
-      const f = Math.min(1, Math.max(0, (1 - e) / 0.4));
-      d.data[(y * w + X) * 4 + 3] = f > Math.random() * 0.9 + 0.05 ? 255 : 0;
-    }
-    x.putImageData(d, 0, 0); setEdge(cv.toDataURL());
+    setStars(Array.from({ length: 70 }, () => ({ l: Math.random() * 100, t: Math.random() * 62, z: Math.random() * 1.8 + 1, d: Math.random() * 3, o: 0.5 + Math.random() * 0.5 })));
 
     const el = controls.current;
     const onWheel = (e: WheelEvent) => { e.preventDefault(); setTime((c) => clampTime(c + (e.deltaY + e.deltaX) * 0.08)); };
     el?.addEventListener("wheel", onWheel, { passive: false });
 
-    const imgs = frames.map((src) => {
-      const i = new Image();
-      i.src = src;
-      return i;
-    });
+    const Q = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
     const canvas = fig.current!, ctx = canvas.getContext("2d")!;
-    canvas.width = D.W; canvas.height = D.H;
-    const rig = makeRig();
-    const N = imgs.length, R = document.documentElement.style, root = scene.current!;
+    canvas.width = D.W * Q; canvas.height = D.H * Q;
+    const rig = makeRig(Q);
+    const R = document.documentElement.style, root = scene.current!;
     let cur = 0, raf = 0;
     let pc = 0;
     const loop = (ts: number) => {
       const goal = target.current / 100;
       cur += (goal - cur) * 0.14; if (Math.abs(goal - cur) < 0.0005) cur = goal;
       const t = cur, s = ts / 1000, n = sm(0.15, 0.75, t);
+      // page theme
       const bg = pal(t, TH_BG), fg = pal(t, TH_FG);
       R.setProperty("--desk", bg);
       R.setProperty("--paper", t < 0.36 ? `color-mix(in srgb, ${bg} 60%, #fff)` : `color-mix(in srgb, ${bg} 93%, ${fg})`);
@@ -207,15 +239,21 @@ export function FallScene() {
       R.setProperty("--ink", pal(t, TH_INK));
       R.setProperty("--rule", `color-mix(in srgb, ${fg} 22%, transparent)`);
       R.setProperty("--paper-shadow", `rgb(0 0 0 / ${0.12 + n * 0.3})`);
+      // the board: palettes, sun / moon, windows, stars, parallax (nearer layers slide further)
       const st = root.style;
-      st.setProperty("--plate-filter", `brightness(${1 + 0.38 * (1 - n)}) saturate(${1 - 0.3 * (1 - n)})`);
-      st.setProperty("--gt", pal(t, TOP)); st.setProperty("--gb", pal(t, BOT));
-      st.setProperty("--grad-o", String(1 - sm(0.72, 1, t)));
-      st.setProperty("--sun-x", lerp(34, 41, sm(0, 0.6, t)) + "%"); st.setProperty("--sun-y", lerp(30, 95, sm(0.05, 0.6, t)) + "%");
-      st.setProperty("--sc", pal(t, SUNC));
-      st.setProperty("--moon-x", lerp(63, 58, sm(0.5, 1, t)) + "%"); st.setProperty("--moon-y", lerp(98, 30, sm(0.5, 0.97, t)) + "%");
-      st.setProperty("--stars-o", String(sm(0.68, 0.95, t)));
+      st.setProperty("--st", pal(t, SKT)); st.setProperty("--sb", pal(t, SKB));
+      st.setProperty("--c1", pal(t, C1)); st.setProperty("--c2", pal(t, C2)); st.setProperty("--c3", pal(t, C3));
+      st.setProperty("--cF", pal(t, CF)); st.setProperty("--cM", pal(t, CM)); st.setProperty("--cN", pal(t, CN));
+      st.setProperty("--cW", pal(t, CW)); st.setProperty("--sc", pal(t, SUNC));
+      st.setProperty("--wo", String(0.3 + 0.7 * sm(0.3, 0.7, t)));
+      st.setProperty("--stars-o", String(sm(0.6, 0.9, t)));
+      // the sun slides down behind the skyline, the moon climbs up from behind it
+      st.setProperty("--sun-x", lerp(16, 56, sm(0, 0.62, t)) + "%"); st.setProperty("--sun-y", lerp(20, 102, sm(0.05, 0.64, t)) + "%");
+      st.setProperty("--moon-x", lerp(82, 70, sm(0.45, 1, t)) + "%"); st.setProperty("--moon-y", lerp(108, 24, sm(0.45, 0.98, t)) + "%");
+      st.setProperty("--cf-x", -t * 12.5 + "%"); st.setProperty("--fc-x", -t * 10 + "%");
+      st.setProperty("--cn-x", -t * 25 + "%"); st.setProperty("--mc-x", -t * 25 + "%"); st.setProperty("--nc-x", -t * 40 + "%");
       // swinging figure: a jointed cut-out posed from the swing sheet, riding a pendulum that follows the slider
+      ctx.setTransform(Q, 0, 0, Q, 0, 0);
       ctx.clearRect(0, 0, D.W, D.H);
       rig(ctx, t, s, cur - pc); pc = cur;
       raf = requestAnimationFrame(loop);
@@ -232,19 +270,23 @@ export function FallScene() {
       <div className="temple-frame relative">
         <span className="tape absolute -left-3 top-5 z-10 h-6 w-30 -rotate-[35deg]" />
         <span className="tape absolute bottom-5 -right-3 z-10 h-6 w-34 -rotate-[30deg]" />
-        <div ref={scene} className="fall-scene" style={edge ? ({ "--edge": `url("${edge}")` } as CSSProperties) : undefined} role="img" aria-label="Dithered pixel Spider-Man falling ">
-          <img className="fall-plate" src={plate.src} alt="spider" />
-          <div className="fall-sky" style={{ "--sky": `url("${skyMask.src}")` } as CSSProperties}>
-            <div className="fall-grad" />
-            <div className="fall-stars">
-              {stars.map((s, i) => <i key={i} style={{ left: `${s.l}%`, top: `${s.t}%`, width: s.z, height: s.z, animationDelay: `${s.d}s`, opacity: s.o }} />)}
-            </div>
+        <div ref={scene} className="fall-scene" role="img" aria-label="Paper-cut diorama: Spider-Man swinging across a city skyline from day to night">
+          <div className="fall-ly fall-sky" />
+          <div className="fall-ly fall-stars">
+            {stars.map((s, i) => <i key={i} style={{ left: `${s.l}%`, top: `${s.t}%`, width: s.z, height: s.z, animationDelay: `${s.d}s`, opacity: s.o }} />)}
+          </div>
+          <div className="fall-ly">
             <div className="fall-orb fall-sun" />
             <div className="fall-orb fall-moon" />
           </div>
-          <canvas ref={fig} className="fall-fig" />
-          <div className="fall-fx" />
-          <div className="fall-grain" />
+          <div className="fall-ly fall-cloud f">{farClouds}</div>
+          <div className="fall-ly fall-city far"><i className="b" /></div>
+          <div className="fall-ly fall-cloud n">{nearClouds}</div>
+          <div className="fall-ly fall-city mid"><i className="b" /><i className="w" /></div>
+          <canvas ref={fig} className="fall-ly fall-fig" />
+          <div className="fall-ly fall-city near"><i className="b" /></div>
+          <div className="fall-ly fall-paper" />
+          <div className="fall-ly fall-frame" />
         </div>
       </div>
 <svg width="0" height="0" className="absolute" aria-hidden="true">
