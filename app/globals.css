@@ -273,6 +273,7 @@
 .dotted-underline {
   position: relative;
   text-decoration: none;
+  text-underline-offset: 2px;
 }
 .dotted-underline::after {
   content: "";
@@ -543,8 +544,8 @@
 /* skyline layers: one silhouette PNG, tinted per layer through a mask; windows are a second mask */
 .fall-city { inset: auto; left: 0; bottom: 0; }
 .fall-city i { position: absolute; inset: 0; -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-position: left bottom; mask-position: left bottom; -webkit-mask-size: auto 100%; mask-size: auto 100%; }
-.fall-city .b { -webkit-mask-image: url("/assets/city-bld.png"); mask-image: url("/assets/city-bld.png"); }
-.fall-city .w { background: var(--cW); opacity: var(--wo, .3); -webkit-mask-image: url("/assets/city-win.png"); mask-image: url("/assets/city-win.png"); }
+.fall-city .b { -webkit-mask-image: url("/assets/city-bld2.png"); mask-image: url("/assets/city-bld2.png"); }
+.fall-city .w { background: var(--cW); opacity: var(--wo, .3); -webkit-mask-image: url("/assets/city-win2.png"); mask-image: url("/assets/city-win2.png"); }
 .fall-city.far { z-index: 6; left: var(--fc-x, 0%); height: 36%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .2)) drop-shadow(2px 4px 4px rgb(0 0 0 / .25)); }
 .fall-city.far .b { background: var(--cF); }
 .fall-city.mid { z-index: 7; left: var(--mc-x, 0%); height: 56%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .18)) drop-shadow(3px 6px 6px rgb(0 0 0 / .4)); }

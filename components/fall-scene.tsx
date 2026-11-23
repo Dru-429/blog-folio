@@ -5,6 +5,7 @@ import { Moon, Sun } from "lucide-react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { clampTime } from "@/lib/temple-time";
 import { TH_BG, TH_FG, TH_INK, TICK, lerp, pal, sm } from "@/lib/fall-palette";
+import Moonfig from "./ui/moon";
 
 const D = { W: 960, H: 448 };
 const track = `linear-gradient(to right, ${TICK.map(([p, c]) => `${c} ${p * 100}%`).join(",")})`;
@@ -277,7 +278,7 @@ export function FallScene() {
           </div>
           <div className="fall-ly">
             <div className="fall-orb fall-sun" />
-            <div className="fall-orb fall-moon" />
+            <Moonfig />
           </div>
           <div className="fall-ly fall-cloud f">{farClouds}</div>
           <div className="fall-ly fall-city far"><i className="b" /></div>
