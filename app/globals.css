@@ -270,6 +270,33 @@
   font-weight: inherit;
   text-underline-offset: 2px;
 }
+.dotted-underline {
+  position: relative;
+  text-decoration: none;
+}
+.dotted-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  /* dashes: 6px line, 4px gap */
+  background-image: repeating-linear-gradient(to right, currentColor 0 6px, transparent 6px 10px);
+}
+.dotted-underline:hover::after,
+.dotted-underline:focus-visible::after {
+  animation: underline-draw 800ms cubic-bezier(0.16, 1, 0.3, 1) 1;
+}
+@keyframes underline-draw {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dotted-underline:hover::after,
+  .dotted-underline:focus-visible::after { animation: none; }
+}
+
 .notebook-section {
   margin-top: var(--space-section);
 }
@@ -356,10 +383,11 @@
 .font-toggle { position: relative; z-index: 1; cursor: pointer; }
 .picture-box { position: relative; z-index: 1; }
 .is-mono .picture-box { background-color: var(--desk); }
-.project-stars { color: var(--ink-dark); }
+.project-stars { color: var(--ink-dark); }x
 .sketch-star { fill: var(--star); stroke: var(--star-outline); stroke-width: 1.5; transform: rotate(-12deg); }
 @media (prefers-reduced-motion: reduce) {
   .sheet, .paper-rules, .paper-margin, .header-rule::after, .paper-holes, .paper-date, .tape { transition: none; }
+  .dotted-underline::after { transition: none; }
 }
 .notebook-content {
   padding-left: calc(var(--paper-margin) + 1rem);
@@ -376,7 +404,7 @@
 .project-note {
   position: relative;
   top: var(--baseline-offset);
-  line-height: var(--line);
+  line-height: var(--line); 
   min-height: var(--line);
 }
 .font-mono-ui { --baseline-offset: 0.65rem; }
@@ -496,21 +524,19 @@
 .fall-scene { position: relative; container-type: inline-size; aspect-ratio: 960 / 448; overflow: hidden; border-radius: 6px; background: #86a9f4; box-shadow: 0 18px 36px rgb(0 0 0 / .35); }
 .fall-ly { position: absolute; inset: 0; pointer-events: none; }
 
-/* sky: flat periwinkle by day, deep teal-navy at night */
-.fall-sky { background: linear-gradient(to bottom, var(--st, #7aa0f2), var(--sb, #a6c3fb)); }
-.fall-stars { opacity: var(--stars-o, 0); }
+.fall-sky { z-index: 0; background: linear-gradient(to bottom, var(--st, #7aa0f2), var(--sb, #a6c3fb)); }
+.fall-stars { z-index: 1; opacity: var(--stars-o, 0); }
 .fall-stars i { position: absolute; border-radius: 50%; background: #fff; animation: fall-tw 2.8s ease-in-out infinite; }
 @keyframes fall-tw { 50% { opacity: .25; } }
 
-/* sun and moon: flat discs with paper-thin halo rings */
 .fall-orb { position: absolute; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); }
-.fall-sun { left: var(--sun-x); top: var(--sun-y); width: 11%; background: var(--sc, #ffd84a); box-shadow: 0 0 0 1.1cqw rgb(255 216 74 / .3), 0 0 0 2.8cqw rgb(255 216 74 / .14), 0 0 7cqw 3cqw rgb(255 180 70 / .25); }
-.fall-moon { left: var(--moon-x); top: var(--moon-y); width: 9%; background: #fff; box-shadow: 0 0 0 .9cqw rgb(255 255 255 / .16), 0 0 0 2.3cqw rgb(255 255 255 / .07), 0 0 5cqw 2cqw rgb(190 220 255 / .35); }
+.fall-sun { z-index: 2; left: var(--sun-x); top: var(--sun-y); width: 11%; background: var(--sc, #ffd84a); box-shadow: 0 0 0 1.1cqw rgb(255 216 74 / .3), 0 0 0 2.8cqw rgb(255 216 74 / .14), 0 0 7cqw 3cqw rgb(255 180 70 / .25); }
+.fall-moon { z-index: 5; left: var(--moon-x); top: var(--moon-y); width: 9%; background: #fff; box-shadow: 0 0 0 .9cqw rgb(255 255 255 / .16), 0 0 0 2.3cqw rgb(255 255 255 / .07), 0 0 5cqw 2cqw rgb(190 220 255 / .35); }
 
 /* clouds: three stacked paper tones; wider than the board so they can slide (parallax) */
 .fall-cloud { inset: auto; top: 0; height: 100%; width: 125%; left: 0; }
-.fall-cloud.f { left: var(--cf-x, 0%); filter: drop-shadow(2px 5px 4px rgb(0 0 0 / .2)); }
-.fall-cloud.n { left: var(--cn-x, 0%); filter: drop-shadow(3px 7px 5px rgb(0 0 0 / .28)); }
+.fall-cloud.f { z-index: 3; left: var(--cf-x, 0%); filter: drop-shadow(2px 5px 4px rgb(0 0 0 / .2)); }
+.fall-cloud.n { z-index: 4; left: var(--cn-x, 0%); filter: drop-shadow(3px 7px 5px rgb(0 0 0 / .28)); }
 .fall-cloud svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .fall-c1 { fill: var(--c1); } .fall-c2 { fill: var(--c2); } .fall-c3 { fill: var(--c3); }
 
@@ -519,19 +545,18 @@
 .fall-city i { position: absolute; inset: 0; -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-position: left bottom; mask-position: left bottom; -webkit-mask-size: auto 100%; mask-size: auto 100%; }
 .fall-city .b { -webkit-mask-image: url("/assets/city-bld.png"); mask-image: url("/assets/city-bld.png"); }
 .fall-city .w { background: var(--cW); opacity: var(--wo, .3); -webkit-mask-image: url("/assets/city-win.png"); mask-image: url("/assets/city-win.png"); }
-.fall-city.far { left: var(--fc-x, 0%); height: 36%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .2)) drop-shadow(2px 4px 4px rgb(0 0 0 / .25)); }
+.fall-city.far { z-index: 6; left: var(--fc-x, 0%); height: 36%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .2)) drop-shadow(2px 4px 4px rgb(0 0 0 / .25)); }
 .fall-city.far .b { background: var(--cF); }
-.fall-city.mid { left: var(--mc-x, 0%); height: 56%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .18)) drop-shadow(3px 6px 6px rgb(0 0 0 / .4)); }
+.fall-city.mid { z-index: 7; left: var(--mc-x, 0%); height: 56%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .18)) drop-shadow(3px 6px 6px rgb(0 0 0 / .4)); }
 .fall-city.mid .b { background: var(--cM); }
-.fall-city.near { left: var(--nc-x, 0%); height: 70%; bottom: -48%; width: 140%; transform: scaleX(-1); filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .14)) drop-shadow(-4px -3px 9px rgb(0 0 0 / .55)); }
+.fall-city.near { z-index: 9; left: var(--nc-x, 0%); height: 70%; bottom: -48%; width: 140%; transform: scaleX(-1); filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .14)) drop-shadow(-4px -3px 9px rgb(0 0 0 / .55)); }
 .fall-city.near .b { background: var(--cN); }
 
-/* Spider-Man canvas sits between the mid and near skylines, so he swings behind the foreground paper */
-.fall-fig { width: 100%; height: 100%; display: block; }
+/* Spider-Man canvas: in front of the moon and the mid skyline, behind the near skyline */
+.fall-fig { z-index: 8; width: 100%; height: 100%; display: block; }
 
 /* paper tooth + kraft board edge */
-.fall-paper { mix-blend-mode: multiply; opacity: .2; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.05 .7' numOctaves='3'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .42 0 0 0 0 .28 0 0 0 1.5 -.35'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
-.fall-frame { box-shadow: inset 0 0 0 12px #a37a4b, inset 0 0 0 13px rgb(60 35 10 / .5), inset 0 0 34px 18px rgb(0 0 0 / .4); }
+.fall-paper { z-index: 10; mix-blend-mode: multiply; opacity: .2; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.05 .7' numOctaves='3'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .42 0 0 0 0 .28 0 0 0 1.5 -.35'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
 @media (prefers-reduced-motion: reduce) { .fall-stars i { animation: none; } }
 

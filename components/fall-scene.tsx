@@ -281,7 +281,6 @@ export function FallScene() {
           </div>
           <div className="fall-ly fall-cloud f">{farClouds}</div>
           <div className="fall-ly fall-city far"><i className="b" /></div>
-          <div className="fall-ly fall-cloud n">{nearClouds}</div>
           <div className="fall-ly fall-city mid"><i className="b" /><i className="w" /></div>
           <canvas ref={fig} className="fall-ly fall-fig" />
           <div className="fall-ly fall-city near"><i className="b" /></div>

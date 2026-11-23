@@ -86,9 +86,9 @@ export function Portfolio() {
             <li>My interests spectrum mostly has visuals, web, maths, softwares &amp; Games.</li>
             <li>
               You can know me better <s className="opacity-70">my through</s> by{" "}
-              <a className="notebook-link underline underline-offset-4 decoration-dotted" href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>,{" "}
-              <a className="underline underline-offset-4 decoration-dotted" href="https://x.com" target="_blank" rel="noreferrer">X (Twitter)</a>,{" "}
-              <a className="underline underline-offset-4 decoration-dotted" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>.
+              <a className="dotted-underline notebook-link" href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>,{" "}
+              <a className="dotted-underline" href="https://x.com" target="_blank" rel="noreferrer">X (Twitter)</a>,{" "}
+              <a className="dotted-underline" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>.
             </li>
           </ul>
 
@@ -141,7 +141,7 @@ function ProjectCard({ project: p }: { project: (typeof projects)[number] }) {
     <article>
       <div className="relative -top-1 text-right">
         {p.link ? (
-          <a className="notebook-link  decoration-dotted text-micro text-right hover:scale-150 transition-all ease-in cursor-pointer" href={p.link} target="_blank" rel="noreferrer">
+          <a className="dotted-underline notebook-link text-micro text-right hover:scale-150 transition-all ease-in cursor-pointer" href={p.link} target="_blank" rel="noreferrer">
             • live ↗
           </a>
         ) : (
@@ -152,7 +152,7 @@ function ProjectCard({ project: p }: { project: (typeof projects)[number] }) {
       <div className="project-note -mt-2 flex items-center justify-between gap-3">
         <h3 className="type-h3 text-ink-dark">{p.name}</h3>
         {p.github ? (
-          <a className="project-stars type-caption inline-flex shrink-0 items-center gap-1 notebook-link  decoration-dotted" href={p.github} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub, ${p.stars ?? "unknown"} stars`}>
+          <a className="dotted-underline project-stars type-caption inline-flex shrink-0 items-center gap-1 notebook-link" href={p.github} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub, ${p.stars ?? "unknown"} stars`}>
             <Star className="sketch-star h-4 w-4" aria-hidden="true" /><span>{p.stars ?? "—"}</span>
           </a>
         ) : (

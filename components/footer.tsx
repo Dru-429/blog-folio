@@ -40,7 +40,7 @@ export function Footer() {
             {CONTACTS.map((c) => (
               <li key={c.label}>
                 <a
-                  className="group grid w-full cursor-pointer grid-cols-[4.5rem_minmax(0,1fr)_1.4rem] items-baseline gap-2 leading-line focus-visible:outline-1 focus-visible:outline-dashed focus-visible:outline-offset-[3px] focus-visible:outline-ink max-sm:grid-cols-[3.75rem_minmax(0,1fr)_1.4rem] max-sm:gap-[0.35rem] max-sm:text-lg"
+                  className="dotted-underline group grid w-full cursor-pointer grid-cols-[4.5rem_minmax(0,1fr)_1.4rem] items-baseline gap-2 leading-line focus-visible:outline-1 focus-visible:outline-dashed focus-visible:outline-offset-[3px] focus-visible:outline-ink max-sm:grid-cols-[3.75rem_minmax(0,1fr)_1.4rem] max-sm:gap-[0.35rem] max-sm:text-lg"
                   href={c.href}
                   {...(c.external ? { target: "_blank", rel: "noreferrer" } : {})}
                 >

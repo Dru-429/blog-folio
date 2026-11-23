@@ -26,15 +26,15 @@ export function MoreFromMe() {
 function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
   const title = p.link ? (
     <a
-      className="type-h3 group inline-flex items-center gap-1 text-ink-dark underline underline-offset-4 decoration-dotted"
+      className="dotted-underline type-h3 group inline-flex items-center gap-1 text-ink-dark"
       href={p.link}
       target="_blank"
       rel="noreferrer"
     >
       {p.name}
-      <span className="type-micro opacity-80 transition-transform group-hover:-translate-y-0.5" aria-hidden>
+      {/* <span className="type-micro opacity-80 transition-transform group-hover:-translate-y-0.5" aria-hidden>
         ↗
-      </span>
+      </span> */}
     </a>
   ) : (
     <span className="type-h3 text-ink-dark underline decoration-dotted underline-offset-2">{p.name}</span>
