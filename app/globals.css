@@ -180,12 +180,12 @@
 
   --type-h2-size: 22px;
   --type-h2-leading: var(--line);
-  --type-h2-weight: 700;
+  --type-h2-weight: 600;
   --type-h2-tracking: -0.01em;
 
   --type-h3-size: 17px;
   --type-h3-leading: var(--line);
-  --type-h3-weight: 600;
+  --type-h3-weight: 500;
   --type-h3-tracking: 0;
 
   --type-body-size: 16px;
@@ -229,7 +229,6 @@
 }
 .type-h3 {
   font-size: var(--type-h3-size);
-  line-height: var(--type-h3-leading);
   font-weight: var(--type-h3-weight);
   letter-spacing: var(--type-h3-tracking);
 }
@@ -240,7 +239,7 @@
   letter-spacing: var(--type-body-tracking);
   text-align: left;
   max-width: var(--type-body-max);
-  text-wrap: balance;
+  /* text-wrap: balance; */
 }
 .type-body-inline {
   font-size: var(--type-body-size);
@@ -284,6 +283,15 @@
   height: 2px;
   /* dashes: 6px line, 4px gap */
   background-image: repeating-linear-gradient(to right, currentColor 0 6px, transparent 6px 10px);
+}
+/* h3 titles: 1px stroke on an 8px repeat so every dash is the same device-pixel weight,
+   and the line sits ~2px under the glyphs (was ~7px). */
+.type-h3.dotted-underline::after {
+  bottom: 3.5px;
+  height: 1px;
+  background-image: repeating-linear-gradient(to right, currentColor 0 4px, transparent 4px 8px);
+  background-repeat: repeat-x;
+  background-size: 8px 1px;
 }
 .dotted-underline:hover::after,
 .dotted-underline:focus-visible::after {

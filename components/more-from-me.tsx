@@ -26,7 +26,7 @@ export function MoreFromMe() {
 function ProjectRow({ project: p }: { project: (typeof projects)[number] }) {
   const title = p.link ? (
     <a
-      className="dotted-underline underline-offset-2 type-h3 group inline-flex items-center gap-1 text-ink-dark"
+      className="dotted-underline type-h3 group inline-flex items-center gap-1 text-ink-dark"
       href={p.link}
       target="_blank"
       rel="noreferrer"

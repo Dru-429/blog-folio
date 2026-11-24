@@ -19,6 +19,6 @@ export const TOP: Stops = [[0, "#2f7fd8"], [.28, "#5b8fe0"], [.5, "#6a4fa8"], [.
 export const BOT: Stops = [[0, "#aee0fa"], [.28, "#ffc98c"], [.5, "#ff7c6a"], [.72, "#2e4ab8"], [1, "#2e4ab8"]];
 export const SUNC: Stops = [[0, "#ffe27a"], [.3, "#ffc24d"], [.55, "#ff6a30"], [1, "#ff6a30"]];
 // whole-page theme (paper/desk/ink), driven by the same 0..1 value as the sky
-export const TH_BG: Stops = [[0, "#dfe8ff"], [.25, "#ffcf9e"], [.36, "#926797"], [.55, "#3f2a66"], [.72, "#142447"], [1, "#0a1a30"]];
+export const TH_BG: Stops = [[0, "#f1f3fb"], [.25, "#ffcf9e"], [.36, "#926797"], [.55, "#3f2a66"], [.72, "#142447"], [1, "#0a1a30"]];
 export const TH_FG: Stops = [[0, "#14204a"], [.25, "#3b2014"], [.355, "#3b2014"], [.365, "#fff4ea"], [.72, "#e0e8ff"], [1, "#cfe3f4"]];
-export const TH_INK: Stops = [[0, "#1f4fd6"], [.25, "#a8350f"], [.355, "#611f09"],[.365, "#ffc1a3"], [.72, "#ffd84a"], [1, "#bfe0ff"]];
+export const TH_INK: Stops = [[0, "#092676"], [.25, "#a8350f"], [.355, "#611f09"],[.365, "#ffc1a3"], [.72, "#ffd84a"], [1, "#bfe0ff"]];
