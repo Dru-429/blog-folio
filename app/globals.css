@@ -376,15 +376,17 @@
   transform-origin: left;
   transition: transform 650ms ease;
 }
-.paper-holes, .paper-date, .tape { transition: opacity 400ms ease; }
+.paper-holes, .paper-date, .tape { transition: translate 650ms ease; }   /* CHANGED: now matches the rules and margin timing */
+.paper-date { display: inline-block; }                                   /* ADDED: translate has no effect on inline boxes */
 .is-mono .paper-rules, .is-mono .header-rule::after { transform: scaleX(0); }
 .is-mono .paper-margin { transform: scaleY(0); }
-.is-mono .paper-holes, .is-mono .paper-date, .is-mono .tape { opacity: 0; }
+.is-mono .paper-holes, .is-mono .tape { translate: 20px 0; }             /* CHANGED: was opacity: 0 */
+.is-mono .paper-date { translate: var(--paper-margin) 0; }               /* ADDED: date slides to the text column */
 .is-mono .sheet { background-color: transparent; box-shadow: none; }
 .font-toggle { position: relative; z-index: 1; cursor: pointer; }
 .picture-box { position: relative; z-index: 1; }
 .is-mono .picture-box { background-color: var(--desk); }
-.project-stars { color: var(--ink-dark); }x
+.project-stars { color: var(--ink-dark); }                               /* FIXED: stray "x" after the brace removed */
 .sketch-star { fill: var(--star); stroke: var(--star-outline); stroke-width: 1.5; transform: rotate(-12deg); }
 @media (prefers-reduced-motion: reduce) {
   .sheet, .paper-rules, .paper-margin, .header-rule::after, .paper-holes, .paper-date, .tape { transition: none; }
@@ -544,7 +546,7 @@
 /* skyline layers: one silhouette PNG, tinted per layer through a mask; windows are a second mask */
 .fall-city { inset: auto; left: 0; bottom: 0; }
 .fall-city i { position: absolute; inset: 0; -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-position: left bottom; mask-position: left bottom; -webkit-mask-size: auto 100%; mask-size: auto 100%; }
-.fall-city .b { -webkit-mask-image: url("/assets/city-bld2.png"); mask-image: url("/assets/city-bld2.png"); }
+.fall-city .b { -webkit-mask-image: url("/assets/city-bld.png"); mask-image: url("/assets/city-bld.png"); }
 .fall-city .w { background: var(--cW); opacity: var(--wo, .3); -webkit-mask-image: url("/assets/city-win2.png"); mask-image: url("/assets/city-win2.png"); }
 .fall-city.far { z-index: 6; left: var(--fc-x, 0%); height: 36%; width: 125%; filter: drop-shadow(0 -1px 0 rgb(255 255 255 / .2)) drop-shadow(2px 4px 4px rgb(0 0 0 / .25)); }
 .fall-city.far .b { background: var(--cF); }

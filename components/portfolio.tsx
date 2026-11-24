@@ -64,7 +64,7 @@ export function Portfolio() {
           header={
             <>
               <span className="paper-date type-caption text-ink-dark">15/11/26</span>
-              <label className="font-toggle type-micro mb-3 flex items-center gap-3 text-ink-dark" htmlFor="font-mode">
+              <label className="font-toggle type-micro flex items-center gap-3 text-ink-dark" htmlFor="font-mode">
                 <span className="font-hand" aria-hidden>✎</span>
                 <Switch id="font-mode" checked={mono} onCheckedChange={setMono} aria-label="Use monospace font" />
                 <span className="font-mono-ui">mono</span>
