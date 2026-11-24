@@ -356,6 +356,7 @@
 .paper-rules {
   inset: var(--header-height) 0 0;
   transform-origin: left;
+  transition: top 650ms ease, transform 650ms ease;
   background-image: linear-gradient(to bottom, transparent calc(100% - 1.5px), var(--rule) calc(100% - 1.5px));
   background-size: 100% var(--line);
   background-repeat: repeat-y;
@@ -367,7 +368,7 @@
   border-right: 1px solid var(--margin-rule);
   transform-origin: top;
 }
-.header-rule { position: relative; border-bottom: 0; }
+.header-rule { position: relative; border-bottom: 0; transition: height 650ms ease; }
 .header-rule::after {
   content: "";
   position: absolute;
@@ -378,6 +379,7 @@
 }
 .paper-holes, .paper-date, .tape { transition: translate 650ms ease; }   /* CHANGED: now matches the rules and margin timing */
 .paper-date { display: inline-block; }                                   /* ADDED: translate has no effect on inline boxes */
+.is-mono { --header-height: var(--line); }
 .is-mono .paper-rules, .is-mono .header-rule::after { transform: scaleX(0); }
 .is-mono .paper-margin { transform: scaleY(0); }
 .is-mono .paper-holes, .is-mono .tape { translate: 20px 0; }             /* CHANGED: was opacity: 0 */
@@ -389,7 +391,7 @@
 .project-stars { color: var(--ink-dark); }                               /* FIXED: stray "x" after the brace removed */
 .sketch-star { fill: var(--star); stroke: var(--star-outline); stroke-width: 1.5; transform: rotate(-12deg); }
 @media (prefers-reduced-motion: reduce) {
-  .sheet, .paper-rules, .paper-margin, .header-rule::after, .paper-holes, .paper-date, .tape { transition: none; }
+  .sheet, .paper-rules, .paper-margin, .header-rule, .header-rule::after, .paper-holes, .paper-date, .tape { transition: none; }
   .dotted-underline::after { transition: none; }
 }
 .notebook-content {
