@@ -62,7 +62,7 @@ export function Portfolio() {
         <SheetChrome
           header={
             <>
-              <span className="paper-date type-caption text-ink-dark">15/11/26</span>
+              <span className="paper-date type-body text-ink-dark">15/11/26</span>
               <button
                 type="button"
                 className="font-toggle"
