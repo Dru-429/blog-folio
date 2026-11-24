@@ -72,8 +72,8 @@ export function Portfolio() {
                 onClick={() => setMono((on) => !on)}
               >
                 <span className="font-toggle-face">
-                  <PencilLine className="font-toggle-glyph" aria-hidden />
                   <ALargeSmall className="font-toggle-glyph" aria-hidden />
+                  <PencilLine className="font-toggle-glyph" aria-hidden />
                   <span className="font-toggle-thumb" aria-hidden />
                 </span>
               </button>

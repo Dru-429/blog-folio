@@ -391,8 +391,8 @@
   display: inline-flex;
   align-items: center;
   height: var(--type-caption-leading);
-  margin: 0;
-  padding: 0;
+  margin-bottom: 3px;
+  padding: 2px 4px 4px 4px;               /* right padding 2px → 4px so the second pen line isn't clipped */
   border: 0;
   background: transparent;
   color: var(--ink-dark);
@@ -403,44 +403,87 @@
   outline: 2px solid var(--ink-dark);
   outline-offset: 2px;
 }
+
+/* track: uneven corners + a second, offset pen line (heavier at the bottom and right) */
 .font-toggle-face {
   /* Kalam draws the date digits past the 13px em box (~18px). Match that ink height. */
-  --toggle-h: calc(var(--type-caption-size) * 1.42);
+  --toggle-h: calc(var(--type-caption-size) * 2);
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  justify-items: center;
+  display: block;
   box-sizing: border-box;
   width: calc(var(--toggle-h) * 2.55);
   height: var(--toggle-h);
-  padding: 1px;
-  border: 1.5px solid var(--ink-dark);
-  border-radius: calc(var(--toggle-h) * 0.34);
+  border: 1.75px solid var(--ink-dark);
+  border-radius:
+    calc(var(--toggle-h) * .36) calc(var(--toggle-h) * .30) calc(var(--toggle-h) * .38) calc(var(--toggle-h) * .32) /
+    calc(var(--toggle-h) * .30) calc(var(--toggle-h) * .38) calc(var(--toggle-h) * .32) calc(var(--toggle-h) * .36);
   background: var(--paper);
 }
-.font-toggle-glyph {
-  position: relative;
-  z-index: 1;
-  width: 62%;
-  height: 62%;
-  stroke-width: 2.25;
+.font-toggle-face::after {                /* the second pen pass */
+  content: "";
+  position: absolute;
+  inset: -1px -3px -3px -1px;
+  pointer-events: none;
+  border: 1px solid var(--ink-dark);
+  border-radius:
+    calc(var(--toggle-h) * .40) calc(var(--toggle-h) * .34) calc(var(--toggle-h) * .42) calc(var(--toggle-h) * .36) /
+    calc(var(--toggle-h) * .34) calc(var(--toggle-h) * .42) calc(var(--toggle-h) * .36) calc(var(--toggle-h) * .40);
+  opacity: .85;
 }
-.font-toggle-thumb {
+
+/* your lucide icons: each is centred exactly where the thumb stops, so the thumb covers one and uncovers the other.
+   Thumb off the left  → the pencil shows on the right (handwriting is active).
+   Thumb on the right → the A icon shows on the left (mono is active). */
+.font-toggle-glyph {
+  --thumb-w: calc(var(--toggle-h) - 6px);
   position: absolute;
   z-index: 0;
-  top: 1px;
-  bottom: 1px;
-  left: 1px;
+  top: 50%;
+  width: calc(var(--toggle-h) * .5);
+  height: calc(var(--toggle-h) * .5);
+  stroke-width: 2.25;
+  transform: translate(-50%, -50%);
+}
+.font-toggle-glyph:first-child  { left: calc(100% - 2px - var(--thumb-w) / 2); }   /* PencilLine  → right slot */
+.font-toggle-glyph:nth-child(2) { left: calc(2px + var(--thumb-w) / 2); }          /* ALargeSmall → left slot  */
+
+/* thumb: rounded square with a doubled right/bottom edge and three bars, sitting above the icons */
+.font-toggle-thumb {
+  --bar: calc(var(--toggle-h) * .19);
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
   box-sizing: border-box;
-  width: calc(50% - 1px);
-  border: 1.5px solid var(--ink-dark);
-  border-radius: calc(var(--toggle-h) * 0.24);
+  width: calc(var(--toggle-h) - 6px);
+  border: 2px solid var(--ink-dark);
+  border-radius:
+    calc(var(--toggle-h) * .26) calc(var(--toggle-h) * .22) calc(var(--toggle-h) * .27) calc(var(--toggle-h) * .24) /
+    calc(var(--toggle-h) * .22) calc(var(--toggle-h) * .27) calc(var(--toggle-h) * .24) calc(var(--toggle-h) * .26);
   background: var(--paper);
+  box-shadow: 1.5px 1.5px 0 var(--ink-dark);
   transition: transform 220ms ease;
 }
+.font-toggle-thumb::before {              /* the three bars */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 48%;
+  border-radius: 1px;
+  background: var(--ink-dark);
+  box-shadow: calc(var(--bar) * -1) 0 0 var(--ink-dark), var(--bar) 0 0 var(--ink-dark);
+  transform: translate(-50%, -50%);
+}
 .font-toggle[aria-checked="true"] .font-toggle-thumb {
-  transform: translateX(calc(100% + 1px));
+  transform: translateX(calc(var(--toggle-h) * 1.55 - 2px));   /* travel = track width − thumb width − gaps */
+}
+@media (prefers-reduced-motion: reduce) {
+  .font-toggle-thumb { transition: none; }
+}@media (prefers-reduced-motion: reduce) {
+  .font-toggle-thumb { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .font-toggle-thumb { transition: none; }
