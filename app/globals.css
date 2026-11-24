@@ -385,7 +385,66 @@
 .is-mono .paper-holes, .is-mono .tape { translate: 20px 0; }             /* CHANGED: was opacity: 0 */
 .is-mono .paper-date { translate: var(--paper-margin) 0; }               /* ADDED: date slides to the text column */
 .is-mono .sheet { background-color: transparent; box-shadow: none; }
-.font-toggle { position: relative; z-index: 1; cursor: pointer; }
+.font-toggle {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  height: var(--type-caption-leading);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-dark);
+  line-height: 0;
+  cursor: pointer;
+}
+.font-toggle:focus-visible {
+  outline: 2px solid var(--ink-dark);
+  outline-offset: 2px;
+}
+.font-toggle-face {
+  /* Kalam draws the date digits past the 13px em box (~18px). Match that ink height. */
+  --toggle-h: calc(var(--type-caption-size) * 1.42);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  box-sizing: border-box;
+  width: calc(var(--toggle-h) * 2.55);
+  height: var(--toggle-h);
+  padding: 1px;
+  border: 1.5px solid var(--ink-dark);
+  border-radius: calc(var(--toggle-h) * 0.34);
+  background: var(--paper);
+}
+.font-toggle-glyph {
+  position: relative;
+  z-index: 1;
+  width: 62%;
+  height: 62%;
+  stroke-width: 2.25;
+}
+.font-toggle-thumb {
+  position: absolute;
+  z-index: 0;
+  top: 1px;
+  bottom: 1px;
+  left: 1px;
+  box-sizing: border-box;
+  width: calc(50% - 1px);
+  border: 1.5px solid var(--ink-dark);
+  border-radius: calc(var(--toggle-h) * 0.24);
+  background: var(--paper);
+  transition: transform 220ms ease;
+}
+.font-toggle[aria-checked="true"] .font-toggle-thumb {
+  transform: translateX(calc(100% + 1px));
+}
+@media (prefers-reduced-motion: reduce) {
+  .font-toggle-thumb { transition: none; }
+}
 .picture-box { position: relative; z-index: 1; }
 .is-mono .picture-box { background-color: var(--desk); }
 .project-stars { color: var(--ink-dark); }                               /* FIXED: stray "x" after the brace removed */

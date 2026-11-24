@@ -2,8 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useRef, useState, type ReactNode } from "react";
-import { Star } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { ALargeSmall, PencilLine, Star } from "lucide-react";
 import { FallScene } from "@/components/fall-scene";
 import { GithubActivity } from "@/components/github-activity";
 import { SpiderCursor } from "./spider-coursor";
@@ -64,11 +63,20 @@ export function Portfolio() {
           header={
             <>
               <span className="paper-date type-caption text-ink-dark">15/11/26</span>
-              <label className="font-toggle type-micro flex items-center gap-3 text-ink-dark" htmlFor="font-mode">
-                <span className="font-hand" aria-hidden>✎</span>
-                <Switch id="font-mode" checked={mono} onCheckedChange={setMono} aria-label="Use monospace font" />
-                <span className="font-mono-ui">mono</span>
-              </label>
+              <button
+                type="button"
+                className="font-toggle"
+                role="switch"
+                aria-checked={mono}
+                aria-label="Use monospace font"
+                onClick={() => setMono((on) => !on)}
+              >
+                <span className="font-toggle-face">
+                  <PencilLine className="font-toggle-glyph" aria-hidden />
+                  <ALargeSmall className="font-toggle-glyph" aria-hidden />
+                  <span className="font-toggle-thumb" aria-hidden />
+                </span>
+              </button>
             </>
           }
         />
