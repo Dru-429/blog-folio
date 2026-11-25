@@ -385,13 +385,13 @@
   transform-origin: left;
   transition: transform 650ms ease;
 }
-.paper-holes, .paper-date, .tape { transition: translate 650ms ease; }   /* CHANGED: now matches the rules and margin timing */
-.paper-date { display: inline-block; }                                   /* ADDED: translate has no effect on inline boxes */
+.paper-date { display: inline-block; transition: translate 650ms ease; }
+.paper-holes, .tape { opacity: 1; transition: opacity 650ms ease; }
 .is-mono { --header-height: var(--line); }
 .is-mono .paper-rules, .is-mono .header-rule::after { transform: scaleX(0); }
 .is-mono .paper-margin { transform: scaleY(0); }
-.is-mono .paper-holes, .is-mono .tape { translate: 20px 0; }             /* CHANGED: was opacity: 0 */
-.is-mono .paper-date { translate: var(--paper-margin) 0; }               /* ADDED: date slides to the text column */
+.is-mono .paper-holes, .is-mono .tape { opacity: 0; }
+.is-mono .paper-date { translate: var(--paper-margin) 0; }
 .is-mono .sheet { background-color: transparent; box-shadow: none; }
 .font-toggle {
   position: relative;
@@ -501,11 +501,28 @@
 .project-stars { color: var(--ink-dark); }                               /* FIXED: stray "x" after the brace removed */
 .sketch-star { fill: var(--star); stroke: var(--star-outline); stroke-width: 1.5; transform: rotate(-12deg); }
 @media (prefers-reduced-motion: reduce) {
-  .sheet, .paper-rules, .paper-margin, .header-rule, .header-rule::after, .paper-holes, .paper-date, .tape { transition: none; }
+  .sheet, .paper-rules, .paper-margin, .header-rule, .header-rule::after, .paper-holes, .paper-date, .tape, .base-footer { transition: none; }
   .dotted-underline::after { transition: none; }
 }
 .notebook-content {
   padding-left: calc(var(--paper-margin) + 1rem);
+}
+/* Sheet width while the footer sits in the padded column; mono keeps the column width. */
+.base-footer {
+  --sheet-pad-left: calc(var(--paper-margin) + 1rem);
+  --sheet-pad-right: 1.5rem;
+  box-sizing: border-box;
+  width: calc(100% + var(--sheet-pad-left) + var(--sheet-pad-right));
+  max-width: none;
+  margin-left: calc(var(--sheet-pad-left) * -1);
+  transition: width 650ms ease, margin-left 650ms ease;
+}
+@media (min-width: 640px) {
+  .base-footer { --sheet-pad-right: 2rem; }
+}
+.is-mono .base-footer {
+  width: 100%;
+  margin-left: 0;
 }
 .notebook-content .type-h1,
 .notebook-content .type-h2,
@@ -544,6 +561,7 @@
 @media (max-width: 640px) {
   :root { --paper-margin: 3.5rem; }
   .notebook-content { padding-left: calc(var(--paper-margin) + 0.75rem); }
+  .base-footer { --sheet-pad-left: calc(var(--paper-margin) + 0.75rem); }
 }
 @utility header-rule {
   border-bottom: 0;

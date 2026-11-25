@@ -147,30 +147,30 @@ export function Portfolio({ beforeFooter }: { beforeFooter?: ReactNode }) {
 
 function ProjectCard({ project: p }: { project: (typeof projects)[number] }) {
   return (
-    <article>
-      <div className="relative -top-1 text-right">
-        {p.link ? (
-          <a className="dotted-underline notebook-link text-micro text-right hover:scale-150 transition-all ease-in cursor-pointer" href={p.link} target="_blank" rel="noreferrer">
-            • live ↗
-          </a>
-        ) : (
-          "• draft"
-        )}
-      </div>
-      <PicBox h="h-[calc(var(--line)*3)] -mt-2" src={p.banner} />
-      <div className="project-note -mt-2 flex items-center justify-between gap-3">
-        <h3 className="type-h3 text-ink-dark">{p.name}</h3>
-        {p.github ? (
-          <a className="dotted-underline project-stars type-caption inline-flex shrink-0 items-center gap-1 notebook-link" href={p.github} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub, ${p.stars ?? "unknown"} stars`}>
-            <Star className="sketch-star h-4 w-4" aria-hidden="true" /><span>{p.stars ?? "—"}</span>
-          </a>
-        ) : (
-          <span className="project-stars type-caption inline-flex shrink-0 items-center gap-1" title="GitHub repository not provided">
-            <Star className="sketch-star h-4 w-4" aria-hidden="true" /><span>—</span>
-          </span>
-        )}
-      </div>
-      <p className="relative top-3 type-body-inline text-ink">{p.desc}</p>
-    </article>
+      <article>
+        <div className="relative -top-1 text-right">
+          {p.link ? (
+            <a className="dotted-underline notebook-link text-micro text-right hover:scale-150 transition-all ease-in cursor-pointer" href={p.link} target="_blank" rel="noreferrer">
+              • live ↗
+            </a>
+          ) : (
+            "• draft"
+          )}
+        </div>
+        <PicBox h="h-[calc(var(--line)*3)] -mt-2" src={p.banner} />
+        <div className="project-note -mt-2 flex items-center justify-between gap-3">
+          <h3 className="type-h3 text-ink-dark">{p.name}</h3>
+          {p.github ? (
+            <a className="dotted-underline project-stars type-caption inline-flex shrink-0 items-center gap-1 notebook-link" href={p.github} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub, ${p.stars ?? "unknown"} stars`}>
+              <Star className="sketch-star h-4 w-4" aria-hidden="true" /><span>{p.stars ?? "—"}</span>
+            </a>
+          ) : (
+            <span className="project-stars type-caption inline-flex shrink-0 items-center gap-1" title="GitHub repository not provided">
+              <Star className="sketch-star h-4 w-4" aria-hidden="true" /><span>—</span>
+            </span>
+          )}
+        </div>
+        <p className="relative top-3 type-body-inline text-ink">{p.desc}</p>
+      </article>
   );
 }
