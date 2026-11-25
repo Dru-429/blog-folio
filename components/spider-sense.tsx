@@ -487,7 +487,7 @@ export function SpiderSense ({
 
   return (
     <section
-      className='spider-sense-section mx-auto w-full max-w-3xl'
+      className='spider-sense-section mx-auto w-full max-w-3xl pb-2'
       aria-label='Spider-Sense'
     >
       <style>{CSS}</style>

@@ -13,12 +13,12 @@ export function Writing() {
   const piece = active === null ? null : PIECES[active];
 
   return (
-    <section className="notebook-section relative" aria-labelledby="writing-heading">
+    <section className="notebook-section/2x x  relative" aria-labelledby="writing-heading">
       <h2 id="writing-heading" className="type-h2 relative text-ink-dark">
         <span className="absolute -left-10" aria-hidden>
           ➜
         </span>
-        <span className="underline underline-offset-2">Writing</span>
+        <span className="underline underline-offset-2">Writing & posts</span>
         <span className="type-caption ml-2 text-ink">({PIECES.length})</span>
       </h2>
 
@@ -37,29 +37,29 @@ export function Writing() {
             <a
               key={item.title}
               href={item.href}
-              className={`${rowGrid} group relative top-[var(--baseline-offset)] min-h-[var(--line)] px-1 leading-line text-ink no-underline outline-none [.is-mono_&]:border-b [.is-mono_&]:border-ink/40`}
+              className={`${rowGrid} group relative top-4 min-h-[var(--line)] px-1 leading-line text-ink no-underline outline-none [.is-mono_&]:border-b [.is-mono_&]:border-ink/40`}
               onMouseEnter={() => setActive(index)}
               onFocus={() => setActive(index)}
             >
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-[-5px] inset-y-[3px] z-0 origin-left scale-x-0 bg-[linear-gradient(180deg,oklch(0.92_0.14_125),oklch(0.86_0.15_128))] transition-transform duration-[380ms] ease-[cubic-bezier(0.6,0.05,0.2,1)] [clip-path:polygon(0_14%,1.5%_2%,40%_6%,98%_0,100%_18%,99%_62%,100%_94%,60%_100%,3%_92%,0_70%)] group-hover:scale-x-100 group-hover:-rotate-[0.3deg] group-focus-visible:scale-x-100 motion-reduce:transition-none"
+                className="pointer-events-none absolute inset-x-[-5px] inset-y-[3px] z-0 origin-left scale-x-0 bg-[linear-gradient(180deg,oklch(0.92_0.14_125),oklch(0.86_0.15_128))] transition-transform duration-[440ms] ease-in-out [clip-path:polygon(0_14%,1.5%_2%,40%_6%,98%_0,100%_18%,99%_62%,100%_94%,60%_100%,3%_92%,0_70%)] group-hover:scale-x-100 group-hover:-rotate-[0.3deg] group-focus-visible:scale-x-100 motion-reduce:transition-none"
               />
-              <span className="relative z-[1] hidden items-center text-micro whitespace-nowrap text-ink transition-colors duration-150 group-hover:text-ink-dark group-focus-visible:text-ink-dark sm:flex">
+              <span className="relative z-[1] hidden items-center text-micro whitespace-nowrap text-ink transition-colors duration-150 group-hover:text-zinc-800 group-focus-visible:text-ink-dark sm:flex">
                 <span className="mr-1.5 inline-block size-[5px] shrink-0 rounded-[1px] bg-current" />
                 {item.date}
               </span>
-              <span className="relative z-[1] truncate text-ink-dark">{item.title}</span>
+              <span className="relative z-[1] truncate text-ink-dark group-hover:text-zinc-900 transition-all ease-in">{item.title}</span>
               <KindTag kind={item.kind} />
-              <span className="relative z-[1] text-right text-ink transition-transform duration-200 group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:text-ink-dark motion-reduce:transition-none">
+              <span className="relative z-[1] text-right text-ink transition-transform duration-200 group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:text-zinc-950 motion-reduce:transition-none">
                 ↗
               </span>
             </a>
           ))}
         </div>
 
-        <p className="type-caption relative top-[var(--baseline-offset)] mt-2">
-          <a className="dotted-underline text-ink-dark" href="#">
+        <p className="type-caption relative mt-(--line)">
+          <a className="dotted-underline text-ink-dark " href="/blog">
             View all writing →
           </a>
         </p>
@@ -72,10 +72,10 @@ function KindTag({ kind }: { kind: Kind }) {
   const blog = kind === "blog";
   return (
     <span
-      className={`relative z-[1] rounded px-1 text-center text-micro transition-colors duration-150 ${
+      className={`relative z-[1] rounded px-1 text-center text-sm transition-colors duration-150 ${
         blog
           ? "border border-ink bg-ink text-paper group-hover:border-ink-dark group-hover:bg-ink-dark"
-          : "border border-dashed border-ink text-ink group-hover:border-ink-dark group-hover:text-ink-dark"
+          : "border border-dashed border-ink text-ink group-hover:border-zinc-900 group-hover:text-zinc-800"
       }`}
     >
       {blog ? "Blog" : "Post"}
@@ -86,7 +86,7 @@ function KindTag({ kind }: { kind: Kind }) {
 function StickyNote({ piece }: { piece: Piece | null }) {
   return (
     <aside
-      className="pointer-events-none absolute top-2 z-20 hidden w-44 right-[calc(100%+var(--paper-margin)+1rem+0.75rem)] min-[1100px]:block"
+      className="pointer-events-none absolute top-20 z-20 hidden w-44 right-[calc(100%+var(--paper-margin)-1rem)] min-[1100px]:block"
       aria-hidden
     >
       <div className="relative h-[230px] rotate-[-4deg] overflow-hidden bg-[oklch(0.93_0.09_98)] px-4 pt-6 pb-4 text-[oklch(0.32_0.03_85)] shadow-[2px_6px_14px_oklch(0_0_0/0.16)] [border-bottom-right-radius:26px_8px]">

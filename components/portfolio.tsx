@@ -62,7 +62,7 @@ export function Portfolio({ beforeFooter }: { beforeFooter?: ReactNode }) {
         <SheetChrome
           header={
             <>
-              <span className="paper-date type-body text-ink-dark">15/11/26</span>
+              <span className="paper-date type-body text-ink-dark">2026.11.18</span>
               <button
                 type="button"
                 className="font-toggle"
@@ -135,7 +135,7 @@ export function Portfolio({ beforeFooter }: { beforeFooter?: ReactNode }) {
             <SpiderSense mono={mono} trackRef={area} />
           </div>
           {beforeFooter}
-          <div>
+          <div className="notebook-section">
             <Footer />
           </div>
         </div>
