@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Portfolio } from "@/components/portfolio";
+import { Writing } from "@/components/writing";
 
 export const metadata: Metadata = {
   title: "Dhruv Sahoo — Handwritten Portfolio",
@@ -16,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Portfolio />;
+  return <Portfolio beforeFooter={<Writing />} />;
 }

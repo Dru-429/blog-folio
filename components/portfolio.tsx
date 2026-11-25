@@ -52,7 +52,7 @@ function SheetChrome({ header }: { header?: ReactNode }) {
   );
 }
 
-export function Portfolio() {
+export function Portfolio({ beforeFooter }: { beforeFooter?: ReactNode }) {
   const [mono, setMono] = useState(false);
   const area = useRef<HTMLDivElement>(null);
 
@@ -118,7 +118,7 @@ export function Portfolio() {
         </div>
       </article>
 
-      <article className="sheet relative mx-auto w-full max-w-3xl text-ink overflow-x-hidden">
+      <article className="sheet relative mx-auto w-full max-w-3xl overflow-visible text-ink">
         <SheetChrome />
         <div className="notebook-content pb-[var(--line)] pr-6 sm:pr-8">
           <section className="notebook-section" aria-labelledby="github-activity-heading">
@@ -134,6 +134,7 @@ export function Portfolio() {
           <div className="notebook-section relative -left-30 min-w-3xl h-auto">
             <SpiderSense mono={mono} trackRef={area} />
           </div>
+          {beforeFooter}
           <div>
             <Footer />
           </div>
