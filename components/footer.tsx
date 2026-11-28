@@ -19,8 +19,8 @@ const CONTACTS: {
     external: true
   },
   {
-    label: 'x',
-    value: '10xdhruv',
+    label: 'X',
+    value: '@10xdhruv',
     href: 'https://x.com/10xdhruv',
     external: true
   }
@@ -44,37 +44,33 @@ function SlantArrow () {
 export function Footer () {
   return (
     <footer className='mx-auto w-full max-w-3xl relative z-[1] text-ink'>
-      <div className='grid grid-cols-[32%_minmax(0,1fr)] items-center gap-12 rounded-lg border-[1.5px] border-dashed border-ink px-8 py-7 max-sm:grid-cols-[minmax(0,1fr)] max-sm:gap-4 max-sm:p-5'>
-        <Image
-          src={telephone}
-          alt='Etched antique telephone'
-          width={1039}
-          height={752}
-          className='pointer-events-none block '
-          style={{
-            maskImage: `url("${telephone.src}")`,
-            WebkitMaskImage: `url("${telephone.src}")`
-          }}
-        />
-        <div className='min-w-0'>
-          <h2 className='text-2xl font-normal leading-line text-ink-dark [.is-mono_&]:text-xl max-sm:text-[1.375rem]'>
+      <div className='grid grid-cols-[32%_minmax(0,1fr)] items-center gap-12 rounded-lg border-[1.5px] border-dashed border-ink px-5 py-3 max-sm:grid-cols-[minmax(0,1fr)] max-sm:gap-4 max-sm:p-5'>
+        <div className="flex flex-col items-center relative">
+          <Image
+            src={telephone}
+            alt='Etched antique telephone'
+            className='pointer-events-none block relative bottom-2'
+          />
+          <span> Caught in my web :D</span>
+        </div>
+        <div className='w-'>
+          <h2 className='w-full text-2xl font-normal leading-line text-ink-dark [.is-mono_&]:text-xl max-sm:text-[1.375rem]'>
             Dhruv Sahoo
           </h2>
-          <ul className='list-none'>
+          <ul className='w-full list-none'>
             {CONTACTS.map(c => (
               <li key={c.label}>
                 <a
-                  className='dotted-underline group grid w-full cursor-pointer grid-cols-[4.5rem_minmax(0,1fr)_1.4rem] items-baseline gap-2 leading-line focus-visible:outline-1 focus-visible:outline-dashed focus-visible:outline-offset-[3px] focus-visible:outline-ink max-sm:grid-cols-[3.75rem_minmax(0,1fr)_1.4rem] max-sm:gap-[0.35rem] max-sm:text-lg'
+                  className='group w-full grid grid-cols-[6rem_1fr] gap-4 cursor-pointer leading-line focus-visible:outline-1 focus-visible:outline-dashed focus-visible:outline-offset-[3px] focus-visible:outline-ink items-end in-[.is-mono_&]:border-b in-[.is-mono_&]:border-ink/30'
                   href={c.href}
                   {...(c.external
                     ? { target: '_blank', rel: 'noreferrer' }
                     : {})}
                 >
-                  <span className='text-ink'>{c.label}</span>
+                  <span className='text-ink/70'>{c.label}</span>
                   <span className='wrap-anywhere text-ink group-hover:text-ink-dark group-focus-visible:text-ink-dark'>
                     {c.value}
                   </span>
-                  <SlantArrow />
                 </a>
               </li>
             ))}
