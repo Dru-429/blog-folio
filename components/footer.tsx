@@ -26,21 +26,6 @@ const CONTACTS: {
   }
 ]
 
-// Slanted arrow that draws itself in from nothing on hover.
-function SlantArrow () {
-  return (
-    <svg
-      className='footer-arrow'
-      viewBox='0 0 24 16'
-      aria-hidden='true'
-      focusable='false'
-    >
-      <path className='arrow-shaft' d='M1 15 L20 2' />
-      <path className='arrow-head' d='M12 1 L20 2 L19 10' />
-    </svg>
-  )
-}
-
 export function Footer () {
   return (
     <footer className='mx-auto w-full max-w-3xl relative z-[1] text-ink'>
@@ -68,7 +53,7 @@ export function Footer () {
                     : {})}
                 >
                   <span className='text-ink/70'>{c.label}</span>
-                  <span className='wrap-anywhere text-ink group-hover:text-ink-dark group-focus-visible:text-ink-dark'>
+                  <span className='wrap-anywhere text-ink group-hover:text-[#C2ED7F] group-focus-visible:text-ink-dark'>
                     {c.value}
                   </span>
                 </a>
@@ -80,7 +65,7 @@ export function Footer () {
 
       <div className='base-footer absolute -bottom-16 flex justify-between gap-4  pt-[0.6rem] text-ink-dark text-xs leading-normal  max-sm:text-[0.6875rem]'>
         <span>© 2026 Dhruv Sahoo</span>
-        <span>v 1.0 Nov 2-26</span>
+        <span>v 1.0 Nov 2026</span>
       </div>
     </footer>
   )

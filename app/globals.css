@@ -275,6 +275,7 @@
   text-underline-offset: 2px;
 }
 .dotted-underline::after {
+  --dash: currentColor; /* NEW: default dash color */
   content: "";
   position: absolute;
   left: 0;
@@ -282,14 +283,14 @@
   width: 100%;
   height: 2px;
   /* dashes: 6px line, 4px gap */
-  background-image: repeating-linear-gradient(to right, currentColor 0 6px, transparent 6px 10px);
+  background-image: repeating-linear-gradient(to right, var(--dash) 0 6px, transparent 6px 10px);
 }
 /* h3 titles: 1px stroke on an 8px repeat so every dash is the same device-pixel weight,
    and the line sits ~2px under the glyphs (was ~7px). */
 .type-h3.dotted-underline::after {
   bottom: 3.5px;
   height: 1px;
-  background-image: repeating-linear-gradient(to right, currentColor 0 4px, transparent 4px 8px);
+  background-image: repeating-linear-gradient(to right, var(--dash) 0 4px, transparent 4px 8px);
   background-repeat: repeat-x;
   background-size: 8px 1px;
 }
@@ -298,13 +299,13 @@
   animation: underline-draw 800ms cubic-bezier(0.16, 1, 0.3, 1) 1;
 }
 @keyframes underline-draw {
-  from { width: 0; }
-  to   { width: 100%; }
+  from { width: 0;    --dash: #C2ED7F; }
+  to   { width: 100%; --dash: #C2ED7F; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dotted-underline:hover::after,
   .dotted-underline:focus-visible::after { animation: none; }
-}
+} 
 
 .notebook-section {
   margin-top: var(--space-section);
@@ -439,9 +440,6 @@
   opacity: .85;
 }
 
-/* your lucide icons: each is centred exactly where the thumb stops, so the thumb covers one and uncovers the other.
-   Thumb off the left  → the pencil shows on the right (handwriting is active).
-   Thumb on the right → the A icon shows on the left (mono is active). */
 .font-toggle-glyph {
   --thumb-w: calc(var(--toggle-h) - 6px);
   position: absolute;
